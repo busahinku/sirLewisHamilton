@@ -67,7 +67,11 @@ public class Prescription {
     }
 
     public String GeneralInfo() {
-        return String.format("Prescription [Medication: %s, Type: %s, Usage: %s, Patient: %s, Doctor: %s, Date: %s]",
-                medication, dosageType, usage, patient.getFullName(), doctor.getFullName(), issueDate);
+        return "Prescription [Medication: " + medication +
+                ", Type: " + dosageType +
+                ", Usage: " + usage +
+                ", Patient: " + patient.getFullName() +
+                ", Doctor: " + doctor.getFullName() +
+                ", Date: " + issueDate + "]";
     }
 }

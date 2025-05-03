@@ -84,8 +84,10 @@ public class Schedule {
     }
 
     public String GeneralInfo() {
-        return String.format("Schedule [ID: %s, Staff: %s, Period: %s to %s, Total Hours: %d]",
-                scheduleId, staffMember.getFullName(), startDate, endDate, totalHours);
+        return "Schedule [ID: " + scheduleId +
+                ", Staff: " + staffMember.getFullName() +
+                ", Period: " + startDate + " to " + endDate +
+                ", Total Hours: " + totalHours + "]";
     }
 
     // Inner class for shifts

@@ -13,9 +13,9 @@ public class PrivateDoctors extends Person {
     private static final double HOSPITAL_FEE_PERCENTAGE = 0.10; // 10% goes to hospital
 
     public PrivateDoctors(String id, String firstName, String lastName, int age, char gender,
-                         String phoneNumber, String username, String password,
-                         String clinicName, String clinicAddress, String specialty,
-                         double appointmentFee, short experience) {
+                          String phoneNumber, String username, String password,
+                          String clinicName, String clinicAddress, String specialty,
+                          double appointmentFee, short experience) {
         super(id, firstName, lastName, age, gender, phoneNumber, username, password);
         this.clinicName = clinicName;
         this.clinicAddress = clinicAddress;
@@ -93,7 +93,13 @@ public class PrivateDoctors extends Person {
     }
 
     public String GeneralInfo() {
-        return String.format("Private Doctor [Name: %s, Clinic: %s, Address: %s, Specialty: %s, Fee: $%.2f/min, Experience: %d years, Total Salary: $%.2f]",
-                getFullName(), clinicName, clinicAddress, specialty, appointmentFee, experience, calculateTotalSalary());
+        String info = "Private Doctor [Name: " + getFullName() +
+                ", Clinic: " + clinicName +
+                ", Address: " + clinicAddress +
+                ", Specialty: " + specialty +
+                ", Fee: $" + String.format("%.2f", appointmentFee) + "/min" +
+                ", Experience: " + experience + " years" +
+                ", Total Salary: $" + String.format("%.2f", calculateTotalSalary()) + "]";
+        return info;
     }
 }

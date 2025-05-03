@@ -135,7 +135,10 @@ public class MedicalRecord {
     }
 
     public String GeneralInfo() {
-        return String.format("Medical Record [ID: %s, Patient: %s, Last Updated: %s, Diagnoses: %d, Procedures: %d]",
-                recordId, patient.getFullName(), lastUpdated, diagnoses.size(), procedures.size());
+        return "Medical Record [ID: " + recordId +
+                ", Patient: " + patient.getFullName() +
+                ", Last Updated: " + lastUpdated +
+                ", Diagnoses: " + diagnoses.size() +
+                ", Procedures: " + procedures.size() + "]";
     }
 } 

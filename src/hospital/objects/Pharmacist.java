@@ -90,7 +90,8 @@ public class Pharmacist extends Person {
     }
 
     public String GeneralInfo() {
-        return String.format("Pharmacist [Name: %s, Location: %s, Schedule: %s]",
-                getFullName(), location, workSchedule);
+        return "Pharmacist [Name: " + getFullName() +
+                ", Location: " + location +
+                ", Schedule: " + workSchedule + "]";
     }
 }

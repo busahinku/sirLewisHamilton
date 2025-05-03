@@ -152,8 +152,13 @@ public class Patient extends Person {
     }
 
     public String GeneralInfo() {
-        return String.format("Patient [Name: %s, Age: %d, Insurance: %s, Balance: $%.2f, Current Room: %s]",
-                getFullName(), getAge(), hasInsurance ? insuranceProvider : "None", balance,
-                currentRoom != null ? currentRoom.getRoomNumber() : "None");
+        String insurance = hasInsurance ? insuranceProvider : "None";
+        String room = (currentRoom != null) ? currentRoom.getRoomNumber() : "None";
+
+        return "Patient [Name: " + getFullName() +
+                ", Age: " + getAge() +
+                ", Insurance: " + insurance +
+                ", Balance: $" + String.format("%.2f", balance) +
+                ", Current Room: " + room + "]";
     }
 }

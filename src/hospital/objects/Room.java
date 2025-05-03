@@ -100,8 +100,18 @@ public class Room {
     }
 
     public String GeneralInfo() {
-        return String.format("Room [Number: %s, Type: %s, Rate: $%.2f/hr, Equipment: %s, Status: %s]",
-                roomNumber, roomType, hourlyRate, equipment, currentPatient != null ? "Occupied" : "Available");
+        String status;
+        if (currentPatient != null) {
+            status = "Occupied";
+        } else {
+            status = "Available";
+        }
+
+        return "Room [Number: " + roomNumber +
+                ", Type: " + roomType +
+                ", Rate: $" + String.format("%.2f", hourlyRate) + "/hr" +
+                ", Equipment: " + equipment +
+                ", Status: " + status + "]";
     }
 
     public void setHourlyRate(double hourlyRate) {

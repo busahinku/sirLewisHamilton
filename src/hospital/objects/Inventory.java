@@ -106,8 +106,12 @@ public class Inventory {
     }
 
     public String GeneralInfo() {
-        return String.format("Inventory [ID: %s, Name: %s, Category: %s, Quantity: %d, Price: $%.2f, Location: %s]",
-                itemId, itemName, category, quantity, unitPrice, location);
+        return "Inventory [ID: " + itemId +
+                ", Name: " + itemName +
+                ", Category: " + category +
+                ", Quantity: " + quantity +
+                ", Price: $" + String.format("%.2f", unitPrice) +
+                ", Location: " + location + "]";
     }
 
     // Inner class for inventory transactions

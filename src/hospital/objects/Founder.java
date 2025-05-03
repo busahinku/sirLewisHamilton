@@ -231,16 +231,13 @@ public class Founder extends Person {
         }
 
         public String getReportSummary() {
-            return String.format("Report: %s\n" +
-                               "Departments: %d\n" +
-                               "Doctors: %d\n" +
-                               "Revenue: $%.2f\n" +
-                               "Expenses: $%.2f\n" +
-                               "Net Income: $%.2f\n" +
-                               "Generated: %s",
-                               title, departmentCount, doctorCount,
-                               totalRevenue, totalExpenses, netIncome,
-                               generationDate);
+            return "Report: " + title + "\n" +
+                    "Departments: " + departmentCount + "\n" +
+                    "Doctors: " + doctorCount + "\n" +
+                    "Revenue: $" + String.format("%.2f", totalRevenue) + "\n" +
+                    "Expenses: $" + String.format("%.2f", totalExpenses) + "\n" +
+                    "Net Income: $" + String.format("%.2f", netIncome) + "\n" +
+                    "Generated: " + generationDate;
         }
     }
 }
