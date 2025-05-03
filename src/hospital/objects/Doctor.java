@@ -171,13 +171,16 @@ public class Doctor extends Person {
     }
 
     public String GeneralInfo() {
-        String baseInfo = "Doctor [Name:" + getFullName() +", " + "Specialty: " + specialty + ", Experience: " + experience + " years]"
-        
+        String baseInfo = "Doctor [Name: " + getFullName() +
+                ", Specialty: " + specialty +
+                ", Experience: " + experience + " years]";
+
         if (isPrivate) {
-            return baseInfo + ", Private Practice at: " + privatePracticeLocation+ " + Fee: "+ appointmentFee
+            return baseInfo + ", Private Practice at: " + privatePracticeLocation +
+                    ", Fee: $" + appointmentFee;
         } else {
-            return baseInfo + String.format(", Department: %s, Office: %s", 
-                    department, officeNumber);
+            return baseInfo + ", Department: " + department +
+                    ", Office: " + officeNumber;
         }
     }
 
