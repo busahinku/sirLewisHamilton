@@ -5,22 +5,28 @@ import java.util.List;
 
 public class Patient extends Person {
     private boolean hasInsurance;
-    private String medicalHistory;
+    private String insuranceProvider;
+    private String insurancePolicyNumber;
     private double balance;
-    private List<String> allergies;
     private List<Appointment> appointments;
     private List<Prescription> prescriptions;
+    private MedicalRecord medicalRecord;
+    private Room currentRoom;
+    private List<Bill> bills;
 
     public Patient(String id, String firstName, String lastName, int age, char gender,
                   String phoneNumber, String username, String password,
-                  boolean hasInsurance, String medicalHistory, double balance) {
+                  boolean hasInsurance, String insuranceProvider, String insurancePolicyNumber) {
         super(id, firstName, lastName, age, gender, phoneNumber, username, password);
         this.hasInsurance = hasInsurance;
-        this.medicalHistory = medicalHistory;
-        this.balance = balance;
-        this.allergies = new ArrayList<>();
+        this.insuranceProvider = insuranceProvider;
+        this.insurancePolicyNumber = insurancePolicyNumber;
+        this.balance = 0.0;
         this.appointments = new ArrayList<>();
         this.prescriptions = new ArrayList<>();
+        this.bills = new ArrayList<>();
+        this.medicalRecord = null;
+        this.currentRoom = null;
     }
 
     // Getters
@@ -28,16 +34,16 @@ public class Patient extends Person {
         return hasInsurance;
     }
 
-    public String getMedicalHistory() {
-        return medicalHistory;
+    public String getInsuranceProvider() {
+        return insuranceProvider;
+    }
+
+    public String getInsurancePolicyNumber() {
+        return insurancePolicyNumber;
     }
 
     public double getBalance() {
         return balance;
-    }
-
-    public List<String> getAllergies() {
-        return new ArrayList<>(allergies);
     }
 
     public List<Appointment> getAppointments() {
@@ -48,64 +54,106 @@ public class Patient extends Person {
         return new ArrayList<>(prescriptions);
     }
 
+    public MedicalRecord getMedicalRecord() {
+        return medicalRecord;
+    }
+
+    public Room getCurrentRoom() {
+        return currentRoom;
+    }
+
+    public List<Bill> getBills() {
+        return new ArrayList<>(bills);
+    }
+
     // Setters
     public void setHasInsurance(boolean hasInsurance) {
         this.hasInsurance = hasInsurance;
     }
 
-    public void setMedicalHistory(String medicalHistory) {
-        this.medicalHistory = medicalHistory;
+    public void setInsuranceProvider(String insuranceProvider) {
+        this.insuranceProvider = insuranceProvider;
+    }
+
+    public void setInsurancePolicyNumber(String insurancePolicyNumber) {
+        this.insurancePolicyNumber = insurancePolicyNumber;
+    }
+
+    public void setMedicalRecord(MedicalRecord medicalRecord) {
+        this.medicalRecord = medicalRecord;
+    }
+
+    public void setCurrentRoom(Room room) {
+        this.currentRoom = room;
+    }
+
+    // Methods
+    public void addAppointment(Appointment appointment) {
+        if (!appointments.contains(appointment)) {
+            appointments.add(appointment);
+        }
+    }
+
+    public void cancelAppointment(Appointment appointment) {
+        appointments.remove(appointment);
+    }
+
+    public void addPrescription(Prescription prescription) {
+        if (!prescriptions.contains(prescription)) {
+            prescriptions.add(prescription);
+            if (medicalRecord != null) {
+                medicalRecord.addMedication(prescription.getMedication());
+            }
+        }
+    }
+
+    public void addBill(Bill bill) {
+        if (!bills.contains(bill)) {
+            bills.add(bill);
+        }
+    }
+
+    public void payBill(Bill bill, double amount, String paymentMethod) {
+        if (bills.contains(bill)) {
+            bill.makePayment(amount, paymentMethod);
+            if (bill.isPaid()) {
+                balance -= bill.getTotalAmount();
+            } else {
+                balance -= amount;
+            }
+        }
     }
 
     public void setBalance(double balance) {
         this.balance = balance;
     }
 
-    // Methods
-    public void addAllergy(String allergy) {
-        if (!allergies.contains(allergy)) {
-            allergies.add(allergy);
+    public void updateMedicalRecord(String diagnosis, String procedure, String labResult) {
+        if (medicalRecord != null) {
+            if (diagnosis != null) medicalRecord.addDiagnosis(diagnosis);
+            if (procedure != null) medicalRecord.addProcedure(procedure);
+            if (labResult != null) medicalRecord.addLabResult(labResult);
         }
     }
 
-    public void removeAllergy(String allergy) {
-        allergies.remove(allergy);
+    public void checkIn(Room room) {
+        if (currentRoom != null) {
+            currentRoom.dischargePatient();
+        }
+        room.assignPatient(this);
+        currentRoom = room;
     }
 
-    public void addAppointment(Appointment appointment) {
-        if (!appointments.contains(appointment)) {
-            appointments.add(appointment);
-            // Deduct appointment cost from balance
-            this.balance -= appointment.getCost();
+    public void checkOut() {
+        if (currentRoom != null) {
+            currentRoom.dischargePatient();
+            currentRoom = null;
         }
     }
 
-    public void cancelAppointment(Appointment appointment) {
-        if (appointments.remove(appointment)) {
-            // Refund the appointment cost
-            this.balance += appointment.getCost();
-        }
-    }
-
-    public void addPrescription(Prescription prescription) {
-        if (!prescriptions.contains(prescription)) {
-            prescriptions.add(prescription);
-        }
-    }
-
-    public void removePrescription(Prescription prescription) {
-        prescriptions.remove(prescription);
-    }
-
-    public void payBill(double amount) {
-        if (amount > 0) {
-            this.balance += amount;
-        }
-    }
-
-    @Override
-    public String toString() {
-        return String.format("Patient [Name: %s, Age: %d, Insurance: %s, Balance: $%.2f, Allergies: %d, Appointments: %d]",
-                getFullName(), getAge(), hasInsurance ? "Yes" : "No", balance, allergies.size(), appointments.size());
+    public String GeneralInfo() {
+        return String.format("Patient [Name: %s, Age: %d, Insurance: %s, Balance: $%.2f, Current Room: %s]",
+                getFullName(), getAge(), hasInsurance ? insuranceProvider : "None", balance,
+                currentRoom != null ? currentRoom.getRoomNumber() : "None");
     }
 }

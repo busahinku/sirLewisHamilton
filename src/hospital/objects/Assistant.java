@@ -82,9 +82,7 @@ public class Assistant extends Person {
                          appointment.getDoctor().getFullName());
     }
 
-    @Override
-    public String toString() {
-        return String.format("Assistant [Name: %s, Department: %s, Duty: %s, Supervisor: %s]",
-                getFullName(), department.getDeptName(), duty, supervisor.getFullName());
+    public String GeneralInfo() {
+        return "Assistant [Name: " + getFullName() + ", Department: " + department.getDeptName() + ", Duty: " + duty + ", Supervisor: " + supervisor.getFullName() + "]";
     }
 }

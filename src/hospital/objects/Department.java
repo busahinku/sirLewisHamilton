@@ -6,17 +6,14 @@ import java.util.List;
 public class Department {
     private String deptName;
     private Doctor head;
-    private String blockNumber;
+    private String blockName;
     private List<Doctor> doctors;
 
-    public Department(String deptName, Doctor head, String blockNumber) {
+    public Department(String deptName, Doctor head, String blockName) {
         this.deptName = deptName;
         this.head = head;
-        this.blockNumber = blockNumber;
+        this.blockName = blockName;
         this.doctors = new ArrayList<>();
-        if (head != null) {
-            this.doctors.add(head);
-        }
     }
 
     // Getters
@@ -28,8 +25,8 @@ public class Department {
         return head;
     }
 
-    public String getBlockNumber() {
-        return blockNumber;
+    public String getBlockName() {
+        return blockName;
     }
 
     public List<Doctor> getDoctors() {
@@ -44,8 +41,8 @@ public class Department {
         }
     }
 
-    public void setBlockNumber(String blockNumber) {
-        this.blockNumber = blockNumber;
+    public void setBlockName(String blockName) {
+        this.blockName = blockName;
     }
 
     // Methods
@@ -59,9 +56,7 @@ public class Department {
         doctors.remove(doctor);
     }
 
-    @Override
-    public String toString() {
-        return String.format("Department [Name: %s, Head: %s, Block: %s, Doctors: %d]",
-                deptName, head.getFullName(), blockNumber, doctors.size());
+    public String GeneralInfo() {
+        return "Department [Name: " + deptName + ", Head: " + head.getFullName() + ", Block: " + blockName + ", Doctors: " + doctors.size() + "]";
     }
 }

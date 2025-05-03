@@ -92,8 +92,7 @@ public class PrivateDoctors extends Person {
         return totalSalary;
     }
 
-    @Override
-    public String toString() {
+    public String GeneralInfo() {
         return String.format("Private Doctor [Name: %s, Clinic: %s, Address: %s, Specialty: %s, Fee: $%.2f/min, Experience: %d years, Total Salary: $%.2f]",
                 getFullName(), clinicName, clinicAddress, specialty, appointmentFee, experience, calculateTotalSalary());
     }

@@ -66,8 +66,7 @@ public class Prescription {
         this.medication += ", " + newMedication;
     }
 
-    @Override
-    public String toString() {
+    public String GeneralInfo() {
         return String.format("Prescription [Medication: %s, Type: %s, Usage: %s, Patient: %s, Doctor: %s, Date: %s]",
                 medication, dosageType, usage, patient.getFullName(), doctor.getFullName(), issueDate);
     }

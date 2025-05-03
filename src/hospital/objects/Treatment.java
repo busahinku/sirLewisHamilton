@@ -73,8 +73,7 @@ public class Treatment {
         System.out.println("Treatment duration updated for patient: " + patient.getFullName());
     }
 
-    @Override
-    public String toString() {
+    public String GeneralInfo() {
         return String.format("Treatment [ID: %s, Patient: %s, Doctor: %s, Category: %s, Advice: %s, Frequency: %s, Duration: %s, Date: %s]",
                 treatmentId, patient.getFullName(), doctor.getFullName(), category, advice, frequency, duration, issueDate);
     }

@@ -55,8 +55,7 @@ public class Review {
         setRating(newRating);
     }
 
-    @Override
-    public String toString() {
+    public String GeneralInfo() {
         return String.format("Review [Patient: %s, Doctor: %s, Rating: %d/5, Date: %s, Comment: %s]",
                 reviewer.getFullName(), reviewedDoctor.getFullName(), rating, 
                 reviewDate.toString(), comment);
