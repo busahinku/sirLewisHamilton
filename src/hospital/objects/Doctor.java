@@ -158,7 +158,7 @@ public class Doctor extends Person {
             return (salary / (30 * 8 * 60)) * durationMinutes; // Convert monthly salary to per-minute rate
         }
     }
-
+//--------EXTREME BUNLARI ANLAMAK LAZIM OZELLIKLE 2 ALTTAN SONRAKI -------//
     public void prescribeMedication(Patient patient, String medication, String dosage, String instructions) {
         Prescription prescription = new Prescription(medication, dosage, instructions, patient, this, "No additional notes");
         patient.addPrescription(prescription);
