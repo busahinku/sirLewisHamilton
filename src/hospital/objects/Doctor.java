@@ -132,7 +132,7 @@ public class Doctor extends Person {
 
     public void cancelAppointment(Appointment appointment) {
         if (appointments.contains(appointment)) {
-            appointment.cancelAppointment();
+            appointments.remove(appointment);
         }
     }
 
