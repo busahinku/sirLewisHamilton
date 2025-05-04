@@ -4,29 +4,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Department {
-    private String deptName;
+    private String name;
     private Doctor head;
-    private String blockName;
+    private String location;
     private List<Doctor> doctors;
 
-    public Department(String deptName, Doctor head, String blockName) {
-        this.deptName = deptName;
+    public Department(String name, Doctor head, String location) {
+        this.name = name;
         this.head = head;
-        this.blockName = blockName;
+        this.location = location;
         this.doctors = new ArrayList<>();
+        if (head != null) {
+            this.doctors.add(head);
+        }
     }
 
     // Getters
-    public String getDeptName() {
-        return deptName;
+    public String getName() {
+        return name;
     }
 
     public Doctor getHead() {
         return head;
     }
 
-    public String getBlockName() {
-        return blockName;
+    public String getLocation() {
+        return location;
     }
 
     public List<Doctor> getDoctors() {
@@ -41,11 +44,6 @@ public class Department {
         }
     }
 
-    public void setBlockName(String blockName) {
-        this.blockName = blockName;
-    }
-
-    // Methods
     public void addDoctor(Doctor doctor) {
         if (!doctors.contains(doctor)) {
             doctors.add(doctor);
@@ -54,9 +52,23 @@ public class Department {
 
     public void removeDoctor(Doctor doctor) {
         doctors.remove(doctor);
+        if (head == doctor) {
+            head = null;
+        }
     }
 
     public String GeneralInfo() {
-        return "Department [Name: " + deptName + ", Head: " + head.getFullName() + ", Block: " + blockName + ", Doctors: " + doctors.size() + "]";
+        StringBuilder info = new StringBuilder();
+        info.append("Department [Name: ").append(name)
+            .append(", Location: ").append(location)
+            .append(", Head: ").append(head.getFullName())
+            .append("]\nDoctors in this department:\n");
+        
+        for (Doctor doctor : doctors) {
+            info.append("- ").append(doctor.getFullName())
+                .append(" (").append(doctor.getSpecialty()).append(")\n");
+        }
+        
+        return info.toString();
     }
 }

@@ -1,8 +1,10 @@
 package hospital.objects;
 
+import hospital.objects.BillItem;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class Bill {
     private String billId;
@@ -103,32 +105,11 @@ public class Bill {
     }
 
     public String GeneralInfo() {
-        return String.format("Bill [ID: %s, Patient: %s, Total: $%.2f, Paid: $%.2f, Status: %s]",
-                billId, patient.getFullName(), totalAmount, paidAmount, isPaid ? "Paid" : "Unpaid");
-    }
-
-    // Inner class for bill items
-    public static class BillItem {
-        private String description;
-        private double amount;
-        private LocalDateTime dateAdded;
-
-        public BillItem(String description, double amount) {
-            this.description = description;
-            this.amount = amount;
-            this.dateAdded = LocalDateTime.now();
+        String paid = "";
+        if (isPaid) {
+            paid = "Paid";
         }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public double getAmount() {
-            return amount;
-        }
-
-        public LocalDateTime getDateAdded() {
-            return dateAdded;
-        }
+        else { paid = "Unpaid"; }
+        return "Bill [ID:" +billId+", Patient: "+patient.getFullName()+", Total: $"+totalAmount+", Paid: "+paidAmount+", Status: "+paid+"]";
     }
 } 

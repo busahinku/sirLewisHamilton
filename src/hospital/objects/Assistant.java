@@ -83,6 +83,6 @@ public class Assistant extends Person {
     }
 
     public String GeneralInfo() {
-        return "Assistant [Name: " + getFullName() + ", Department: " + department.getDeptName() + ", Duty: " + duty + ", Supervisor: " + supervisor.getFullName() + "]";
+        return "Assistant [Name: " + getFullName() + ", Department: " + department.getName() + ", Duty: " + duty + ", Supervisor: " + supervisor.getFullName() + "]";
     }
 }

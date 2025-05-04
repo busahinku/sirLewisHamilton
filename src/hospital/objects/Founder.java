@@ -115,7 +115,7 @@ public class Founder extends Person {
         }
         
         for (Doctor doc : doctors) {
-            startupCosts += doc.getSalary() * 3; // 3 months salary as initial cost
+            startupCosts += doc.getSalary();
         }
         
         startupTransactions.add(new FinancialTransaction("Expense", -startupCosts, "Startup Costs", "Initial hospital setup"));
@@ -135,110 +135,6 @@ public class Founder extends Person {
     public String getFinancialSummary() {
         return String.format("Financial Summary [Revenue: $%.2f, Expenses: $%.2f, Net Income: $%.2f]",
                 totalRevenue, totalExpenses, getNetIncome());
-    }
-
-    // Inner class for financial transactions
-    public static class FinancialTransaction {
-        private String type; // "Revenue" or "Expense"
-        private double amount;
-        private String category;
-        private String description;
-        private LocalDateTime date;
-
-        public FinancialTransaction(String type, double amount, String category, String description) {
-            this.type = type;
-            this.amount = amount;
-            this.category = category;
-            this.description = description;
-            this.date = LocalDateTime.now();
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public double getAmount() {
-            return amount;
-        }
-
-        public String getCategory() {
-            return category;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public LocalDateTime getDate() {
-            return date;
-        }
-    }
-
-    // Inner class for hospital reports
-    public static class HospitalReport {
-        private String title;
-        private int departmentCount;
-        private int doctorCount;
-        private double totalRevenue;
-        private double totalExpenses;
-        private double netIncome;
-        private List<FinancialTransaction> transactions;
-        private LocalDateTime generationDate;
-
-        public HospitalReport(String title, int departmentCount, int doctorCount,
-                            double totalRevenue, double totalExpenses, double netIncome,
-                            List<FinancialTransaction> transactions) {
-            this.title = title;
-            this.departmentCount = departmentCount;
-            this.doctorCount = doctorCount;
-            this.totalRevenue = totalRevenue;
-            this.totalExpenses = totalExpenses;
-            this.netIncome = netIncome;
-            this.transactions = new ArrayList<>(transactions);
-            this.generationDate = LocalDateTime.now();
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public int getDepartmentCount() {
-            return departmentCount;
-        }
-
-        public int getDoctorCount() {
-            return doctorCount;
-        }
-
-        public double getTotalRevenue() {
-            return totalRevenue;
-        }
-
-        public double getTotalExpenses() {
-            return totalExpenses;
-        }
-
-        public double getNetIncome() {
-            return netIncome;
-        }
-
-        public List<FinancialTransaction> getTransactions() {
-            return new ArrayList<>(transactions);
-        }
-
-        public LocalDateTime getGenerationDate() {
-            return generationDate;
-        }
-
-        public String getReportSummary() {
-            return "Report: " + title + "\n" +
-                    "Departments: " + departmentCount + "\n" +
-                    "Doctors: " + doctorCount + "\n" +
-                    "Revenue: $" + String.format("%.2f", totalRevenue) + "\n" +
-                    "Expenses: $" + String.format("%.2f", totalExpenses) + "\n" +
-                    "Net Income: $" + String.format("%.2f", netIncome) + "\n" +
-                    "Generated: " + generationDate;
-        }
     }
 }
 

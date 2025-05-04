@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Doctor extends Person {
+    public static int id = 0000000;
     private String department;
     private String specialty;
     private String officeNumber;
@@ -158,7 +159,7 @@ public class Doctor extends Person {
             return (salary / (30 * 8 * 60)) * durationMinutes; // Convert monthly salary to per-minute rate
         }
     }
-//--------EXTREME BUNLARI ANLAMAK LAZIM OZELLIKLE 2 ALTTAN SONRAKI -------//
+
     public void prescribeMedication(Patient patient, String medication, String dosage, String instructions) {
         Prescription prescription = new Prescription(medication, dosage, instructions, patient, this, "No additional notes");
         patient.addPrescription(prescription);
@@ -212,26 +213,76 @@ public class Doctor extends Person {
         return true;
     }
 
+
+
+    // Scheduling Part We Are Taking HELPP
     public List<LocalDateTime> getAvailableSlots(LocalDateTime startDate, LocalDateTime endDate, int durationMinutes) {
         List<LocalDateTime> availableSlots = new ArrayList<>();
         LocalDateTime current = startDate;
 
+        // Only check working hours (9 AM to 5 PM)
         while (current.isBefore(endDate)) {
-            if (isAvailable(current, durationMinutes)) {
-                availableSlots.add(current);
+            // Skip weekends
+            if (current.getDayOfWeek().getValue() >= 6) {
+                current = current.plusDays(1).withHour(9).withMinute(0);
+                continue;
             }
-            current = current.plusMinutes(30); // Check every 30 minutes
+
+            // Only check between 9 AM and 5 PM
+            if (current.getHour() >= 9 && current.getHour() < 17) {
+                if (isAvailable(current, durationMinutes)) {
+                    availableSlots.add(current);
+                }
+            }
+
+            // Move to next 30-minute slot
+            current = current.plusMinutes(30);
+
+            // If we've passed 5 PM, move to next day at 9 AM
+            if (current.getHour() >= 17) {
+                current = current.plusDays(1).withHour(9).withMinute(0);
+            }
         }
         return availableSlots;
     }
 
     public Appointment scheduleAppointment(Patient patient, LocalDateTime dateTime, int durationMinutes) {
-        if (!isAvailable(dateTime, durationMinutes)) {
-            System.out.println("Sorry, the selected time slot is not available.");
+        // Check if the requested time is in the future
+        if (dateTime.isBefore(LocalDateTime.now())) {
+            System.out.println("Cannot schedule appointment in the past.");
             return null;
         }
 
-        String appointmentId = "A" + System.currentTimeMillis();
+        // Work Hours Check
+        if (dateTime.getHour() < 9 || dateTime.getHour() >= 17) {
+            System.out.println("Appointments can only be scheduled between 9 AM and 5 PM.");
+            return null;
+        }
+
+        // Check if the requested time is on a weekend
+        if (dateTime.getDayOfWeek().getValue() >= 6) {
+            System.out.println("Appointments cannot be scheduled on weekends.");
+            return null;
+        }
+
+        if (!isAvailable(dateTime, durationMinutes)) {
+            System.out.println("Sorry, the selected time slot is not available.");
+            System.out.println("Here are the available slots for the next week:");
+            List<LocalDateTime> availableSlots = getAvailableSlots(
+                LocalDateTime.now().plusDays(1).withHour(9).withMinute(0),
+                LocalDateTime.now().plusWeeks(1),
+                durationMinutes
+            );
+            for (LocalDateTime slot : availableSlots) {
+                System.out.println(slot);
+            }
+            return null;
+        }
+
+
+        id = id + 1;
+        String textAppointmentIDC = String.valueOf(id);
+        String appointmentId = "A" + textAppointmentIDC;
         Appointment appointment = new Appointment(appointmentId, patient, this, dateTime, durationMinutes);
         appointments.add(appointment);
         patient.addAppointment(appointment);

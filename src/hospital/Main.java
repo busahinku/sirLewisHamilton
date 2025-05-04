@@ -24,8 +24,30 @@ public class Main {
         // Assign doctors to departments
         cardiology.setHead(cardiologist);
         neurology.setHead(neurologist);
+
+        // Create departments through founder
+        founder.createDepartment("Cardiology", cardiologist, "Block A");
+        founder.createDepartment("Neurology", neurologist, "Block B");
+
+        // Hire doctors through founder
         founder.hireDoctor(cardiologist, cardiology);
         founder.hireDoctor(neurologist, neurology);
+
+        // Print department information
+        System.out.println("\n=== Department Information ===");
+        System.out.println(cardiology.GeneralInfo());
+        System.out.println(neurology.GeneralInfo());
+
+        // Print doctors in each department
+        System.out.println("\n=== Doctors in Cardiology ===");
+        for (Doctor doctor : cardiology.getDoctors()) {
+            System.out.println(doctor.GeneralInfo());
+        }
+
+        System.out.println("\n=== Doctors in Neurology ===");
+        for (Doctor doctor : neurology.getDoctors()) {
+            System.out.println(doctor.GeneralInfo());
+        }
 
         // Create patients
         Patient patient1 = new Patient("P001", "Robert", "Brown", 35, 'M', "555-2001", 
@@ -76,21 +98,6 @@ public class Main {
         Review review2 = new Review(patient2, neurologist, 
             "Very knowledgeable and caring", 4);
 
-        // Create schedules
-        Schedule schedule1 = new Schedule("S001", cardiologist, now, now.plusMonths(1));
-        schedule1.addShift(now.plusDays(1), now.plusDays(1).plusHours(8), "Cardiology Ward");
-        schedule1.addShift(now.plusDays(2), now.plusDays(2).plusHours(8), "Cardiology Ward");
-
-        Schedule schedule2 = new Schedule("S002", neurologist, now, now.plusMonths(1));
-        schedule2.addShift(now.plusDays(1), now.plusDays(1).plusHours(8), "Neurology Ward");
-        schedule2.addShift(now.plusDays(2), now.plusDays(2).plusHours(8), "Neurology Ward");
-
-        // Create inventory items
-        Inventory med1 = new Inventory("I001", "Lisinopril", "Medication", 100, 20, 5.0, 
-            "PharmaCo", "Pharmacy");
-        Inventory med2 = new Inventory("I002", "Sumatriptan", "Medication", 50, 10, 8.0, 
-            "MediCorp", "Pharmacy");
-
         // Test patient check-in and check-out
         System.out.println("\n=== Testing Room Management ===");
         patient1.checkIn(room101);
@@ -109,8 +116,6 @@ public class Main {
         System.out.println("\n=== Testing Appointments ===");
         appointment1.setCompleted(true);
         appointment2.setCompleted(true);
-
-
         System.out.println(appointment1.GeneralInfo());
         System.out.println(appointment2.GeneralInfo());
 
@@ -129,35 +134,6 @@ public class Main {
         System.out.println(review1.GeneralInfo());
         System.out.println(review2.GeneralInfo());
 
-        // Test schedules
-        System.out.println("\n=== Testing Schedules ===");
-        System.out.println(schedule1.GeneralInfo());
-        System.out.println(schedule2.GeneralInfo());
-
-        // Test inventory management
-        System.out.println("\n=== Testing Inventory ===");
-        med1.addStock(50);
-        med2.removeStock(10);
-        System.out.println(med1.GeneralInfo());
-        System.out.println(med2.GeneralInfo());
-
-        // Test department management
-        System.out.println("\n=== Testing Departments ===");
-        System.out.println(cardiology.GeneralInfo());
-        System.out.println(neurology.GeneralInfo());
-
-        // Test doctor management
-        System.out.println("\n=== Testing Doctors ===");
-        System.out.println(cardiologist.GeneralInfo());
-        System.out.println(neurologist.GeneralInfo());
-
-        // Test patient discharge
-        System.out.println("\n=== Testing Patient Discharge ===");
-        patient1.checkOut();
-        patient2.checkOut();
-        System.out.println(room101.GeneralInfo());
-        System.out.println(room102.GeneralInfo());
-
         // Test hospital revenue and reporting
         System.out.println("\n=== Testing Hospital Financial System ===");
         
@@ -174,10 +150,6 @@ public class Main {
         founder.addRevenue(bill1.getTotalAmount(), "Bill Payment", "Payment from " + patient1.getFullName());
         founder.addRevenue(bill2.getTotalAmount(), "Bill Payment", "Payment from " + patient2.getFullName());
 
-        // Add expenses for medications
-        founder.addExpense("Medication", med1.getUnitPrice() * 50, "Purchase of " + med1.getItemName());
-        founder.addExpense("Medication", med2.getUnitPrice() * 10, "Purchase of " + med2.getItemName());
-
         // Generate monthly report
         founder.generateMonthlyReport();
         System.out.println("\nMonthly Report:");
@@ -189,7 +161,7 @@ public class Main {
 
         // Print detailed transactions
         System.out.println("\nRecent Transactions:");
-        for (Founder.FinancialTransaction transaction : founder.getTransactions()) {
+        for (FinancialTransaction transaction : founder.getTransactions()) {
             System.out.printf("%s: $%.2f - %s (%s)%n",
                 transaction.getType(),
                 Math.abs(transaction.getAmount()),
@@ -197,54 +169,67 @@ public class Main {
                 transaction.getCategory());
         }
 
-        // Test appointment scheduling system
-        System.out.println("\n=== Testing Appointment Scheduling System ===");
+        // Test appointment scheduling
+        System.out.println("\n=== Testing Appointment Scheduling ===");
         
-        // Get available slots for next week
-        LocalDateTime nextWeek = now.plusWeeks(1);
+        // Show available slots for next week
         System.out.println("\nAvailable slots for Dr. Smith (Cardiologist) next week:");
-        List<LocalDateTime> availableSlots = cardiologist.getAvailableSlots(now, nextWeek, 30);
+        List<LocalDateTime> availableSlots = cardiologist.getAvailableSlots(
+            LocalDateTime.now().plusDays(1).withHour(9).withMinute(0),
+            LocalDateTime.now().plusWeeks(1),
+            30
+        );
         for (LocalDateTime slot : availableSlots) {
             System.out.println(slot);
         }
 
-        // Patient tries to schedule an appointment
-        LocalDateTime desiredTime = now.plusDays(2).withHour(10).withMinute(0);
+        // Patient tries to schedule an appointment for next week
+        LocalDateTime desiredTime = LocalDateTime.now().plusDays(3).withHour(10).withMinute(0);
+        System.out.println("\nPatient trying to schedule appointment for: " + desiredTime);
         Appointment newAppointment = cardiologist.scheduleAppointment(patient1, desiredTime, 30);
         if (newAppointment != null) {
-            System.out.println("\nAppointment scheduled successfully:");
+            System.out.println("Appointment scheduled successfully:");
             System.out.println(newAppointment.GeneralInfo());
         }
 
-        // Try to schedule overlapping appointment
-        System.out.println("\nTrying to schedule overlapping appointment:");
+        // Try to schedule another appointment at the same time
+        System.out.println("\nAnother patient trying to schedule at the same time:");
         Appointment overlappingAppointment = cardiologist.scheduleAppointment(patient2, desiredTime, 30);
         if (overlappingAppointment == null) {
             System.out.println("Failed to schedule overlapping appointment (as expected)");
         }
 
-        // Get doctor's upcoming appointments
-        System.out.println("\nDr. Smith's upcoming appointments:");
-        for (Appointment appointment : cardiologist.getUpcomingAppointments()) {
-            System.out.println(appointment.GeneralInfo());
+        // Try to schedule an appointment in the past
+        System.out.println("\nTrying to schedule appointment in the past:");
+        Appointment pastAppointment = cardiologist.scheduleAppointment(patient2, 
+            LocalDateTime.now().minusDays(1), 30);
+        if (pastAppointment == null) {
+            System.out.println("Failed to schedule past appointment (as expected)");
         }
 
-        // Try to reschedule appointment
-        System.out.println("\nRescheduling appointment:");
-        LocalDateTime newTime = desiredTime.plusHours(2);
-        cardiologist.rescheduleAppointment(newAppointment, newTime);
-        System.out.println("Updated appointment details:");
-        System.out.println(newAppointment.GeneralInfo());
-
-        // Cancel appointment
-        System.out.println("\nCancelling appointment:");
-        cardiologist.cancelAppointment(newAppointment);
-        System.out.println("Appointment status: " + newAppointment.getStatus());
-
-        // Get appointments for specific date
-        System.out.println("\nAppointments for " + now.toLocalDate() + ":");
-        for (Appointment appointment : cardiologist.getAppointmentsForDate(now)) {
-            System.out.println(appointment.GeneralInfo());
+        // Try to schedule an appointment on weekend
+        System.out.println("\nTrying to schedule appointment on weekend:");
+        LocalDateTime weekendTime = LocalDateTime.now().plusDays(5).withHour(10).withMinute(0);
+        if (weekendTime.getDayOfWeek().getValue() >= 6) {
+            Appointment weekendAppointment = cardiologist.scheduleAppointment(patient2, weekendTime, 30);
+            if (weekendAppointment == null) {
+                System.out.println("Failed to schedule weekend appointment (as expected)");
+            }
         }
+
+        // Try to schedule an appointment outside working hours
+        System.out.println("\nTrying to schedule appointment outside working hours:");
+        LocalDateTime lateTime = LocalDateTime.now().plusDays(2).withHour(18).withMinute(0);
+        Appointment lateAppointment = cardiologist.scheduleAppointment(patient2, lateTime, 30);
+        if (lateAppointment == null) {
+            System.out.println("Failed to schedule appointment outside working hours (as expected)");
+        }
+
+        // Test patient discharge
+        System.out.println("\n=== Testing Patient Discharge ===");
+        patient1.checkOut();
+        patient2.checkOut();
+        System.out.println(room101.GeneralInfo());
+        System.out.println(room102.GeneralInfo());
     }
 }
