@@ -2,8 +2,8 @@ package hospital;
 
 import hospital.objects.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalTime;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -172,55 +172,45 @@ public class Main {
         // Test appointment scheduling
         System.out.println("\n=== Testing Appointment Scheduling ===");
         
-        // Show available slots for next week
-        System.out.println("\nAvailable slots for Dr. Smith (Cardiologist) next week:");
-        List<LocalDateTime> availableSlots = cardiologist.getAvailableSlots(
-            LocalDateTime.now().plusDays(1).withHour(9).withMinute(0),
-            LocalDateTime.now().plusWeeks(1),
-            30
-        );
-        for (LocalDateTime slot : availableSlots) {
-            System.out.println(slot);
-        }
+        // Create and set StaticSchedule for the doctor
+        StaticSchedule staticSchedule = new StaticSchedule();
+        cardiologist.setStaticSchedule(staticSchedule);
+        
+        // Get available slots for Monday
+        System.out.println("\nAvailable slots for Monday:");
+        System.out.println(cardiologist.getAvailableSlots(StaticSchedule.Day.MONDAY));
 
-        // Patient tries to schedule an appointment for next week
-        LocalDateTime desiredTime = LocalDateTime.now().plusDays(3).withHour(10).withMinute(0);
-        System.out.println("\nPatient trying to schedule appointment for: " + desiredTime);
-        Appointment newAppointment = cardiologist.scheduleAppointment(patient1, desiredTime, 30);
+        // Patient tries to schedule an appointment for Monday at 10:00
+        System.out.println("\nPatient trying to schedule appointment for Monday at 10:00");
+        Appointment newAppointment = cardiologist.scheduleAppointment(patient1, StaticSchedule.Day.MONDAY, LocalTime.of(10, 0), 30);
         if (newAppointment != null) {
             System.out.println("Appointment scheduled successfully:");
             System.out.println(newAppointment.GeneralInfo());
         }
 
+        // Show available slots after scheduling
+        System.out.println("\nAvailable slots after scheduling:");
+        System.out.println(cardiologist.getAvailableSlots(StaticSchedule.Day.MONDAY));
+
+        // Cancel the appointment
+        System.out.println("\nCancelling the appointment...");
+        cardiologist.cancelAppointment(newAppointment);
+
+        // Show available slots after cancellation
+        System.out.println("\nAvailable slots after cancellation:");
+        System.out.println(cardiologist.getAvailableSlots(StaticSchedule.Day.MONDAY));
+
         // Try to schedule another appointment at the same time
-        System.out.println("\nAnother patient trying to schedule at the same time:");
-        Appointment overlappingAppointment = cardiologist.scheduleAppointment(patient2, desiredTime, 30);
-        if (overlappingAppointment == null) {
-            System.out.println("Failed to schedule overlapping appointment (as expected)");
-        }
-
-        // Try to schedule an appointment in the past
-        System.out.println("\nTrying to schedule appointment in the past:");
-        Appointment pastAppointment = cardiologist.scheduleAppointment(patient2, 
-            LocalDateTime.now().minusDays(1), 30);
-        if (pastAppointment == null) {
-            System.out.println("Failed to schedule past appointment (as expected)");
-        }
-
-        // Try to schedule an appointment on weekend
-        System.out.println("\nTrying to schedule appointment on weekend:");
-        LocalDateTime weekendTime = LocalDateTime.now().plusDays(5).withHour(10).withMinute(0);
-        if (weekendTime.getDayOfWeek().getValue() >= 6) {
-            Appointment weekendAppointment = cardiologist.scheduleAppointment(patient2, weekendTime, 30);
-            if (weekendAppointment == null) {
-                System.out.println("Failed to schedule weekend appointment (as expected)");
-            }
+        System.out.println("\nTrying to schedule another appointment at 10:00");
+        Appointment newAppointment2 = cardiologist.scheduleAppointment(patient2, StaticSchedule.Day.MONDAY, LocalTime.of(10, 0), 30);
+        if (newAppointment2 != null) {
+            System.out.println("Appointment scheduled successfully after cancellation:");
+            System.out.println(newAppointment2.GeneralInfo());
         }
 
         // Try to schedule an appointment outside working hours
         System.out.println("\nTrying to schedule appointment outside working hours:");
-        LocalDateTime lateTime = LocalDateTime.now().plusDays(2).withHour(18).withMinute(0);
-        Appointment lateAppointment = cardiologist.scheduleAppointment(patient2, lateTime, 30);
+        Appointment lateAppointment = cardiologist.scheduleAppointment(patient2, StaticSchedule.Day.MONDAY, LocalTime.of(17, 30), 30);
         if (lateAppointment == null) {
             System.out.println("Failed to schedule appointment outside working hours (as expected)");
         }

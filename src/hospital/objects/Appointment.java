@@ -13,6 +13,19 @@ public class Appointment {
     private double privateDoctorRevenue;
     private boolean isCompleted;
     private String status; // "Scheduled", "Completed", "Cancelled"
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void cancel() {
+        setStatus("Cancelled");
+        addNote("Appointment cancelled");
+    }
     private String notes;
 
     public Appointment(String appointmentId, Patient patient, Doctor doctor,
@@ -70,9 +83,6 @@ public class Appointment {
         return isCompleted;
     }
 
-    public String getStatus() {
-        return status;
-    }
 
     public String getNotes() {
         return notes;

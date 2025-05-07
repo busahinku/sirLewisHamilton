@@ -1,6 +1,7 @@
 package hospital.objects;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class Doctor extends Person {
     private String privatePracticeLocation; // For private doctors only
     private List<Appointment> appointments;
     private List<Patient> patients;
-    private Schedule schedule;
+    private StaticSchedule staticSchedule;
     private List<Review> reviews;
 
     public Doctor(String id, String firstName, String lastName, int age, char gender, 
@@ -35,7 +36,7 @@ public class Doctor extends Person {
         this.appointments = new ArrayList<>();
         this.patients = new ArrayList<>();
         this.reviews = new ArrayList<>();
-        this.schedule = null;
+        this.staticSchedule = null;
     }
 
     // Getters
@@ -79,8 +80,8 @@ public class Doctor extends Person {
         return new ArrayList<>(patients);
     }
 
-    public Schedule getSchedule() {
-        return schedule;
+    public StaticSchedule getStaticSchedule() {
+        return staticSchedule;
     }
 
     public List<Review> getReviews() {
@@ -116,8 +117,8 @@ public class Doctor extends Person {
         }
     }
 
-    public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
+    public void setStaticSchedule(StaticSchedule schedule) {
+        this.staticSchedule = schedule;
     }
 
     // Methods
@@ -133,6 +134,13 @@ public class Doctor extends Person {
     public void cancelAppointment(Appointment appointment) {
         if (appointments.contains(appointment)) {
             appointments.remove(appointment);
+            // Update the status of the appointment
+            appointment.setStatus("Cancelled");
+            // Add a note about the cancellation
+            appointment.addNote("Appointment cancelled by patient");
+            System.out.println("Appointment cancelled successfully.");
+        } else {
+            System.out.println("Appointment not found in doctor's schedule.");
         }
     }
 
@@ -185,28 +193,23 @@ public class Doctor extends Person {
         }
     }
 
-    public boolean isAvailable(LocalDateTime dateTime, int durationMinutes) {
-        if (schedule != null) {
-            // Check if the time is within doctor's working hours
-            for (Schedule.Shift shift : schedule.getShifts()) {
-                if (dateTime.toLocalDate().equals(shift.getStartTime().toLocalDate())) {
-                    if (dateTime.isBefore(shift.getStartTime()) || 
-                        dateTime.plusMinutes(durationMinutes).isAfter(shift.getEndTime())) {
-                        return false;
-                    }
-                }
-            }
+    public boolean isAvailable(StaticSchedule.Day day, LocalTime time, int durationMinutes) {
+        if (staticSchedule == null) {
+            return false;
+        }
+        
+        // Check if the time slot exists in our static schedule
+        if (!staticSchedule.isTimeSlotAvailable(day, time)) {
+            return false;
         }
 
         // Check for overlapping appointments
         for (Appointment appointment : appointments) {
-            if (appointment.getStatus().equals("Cancelled")) continue;
+            // Convert appointment time to StaticSchedule.Day for comparison
+            StaticSchedule.Day appointmentDay = StaticSchedule.Day.values()[appointment.getDateTime().toLocalDate().getDayOfWeek().getValue() - 1];
+            LocalTime appointmentTime = appointment.getDateTime().toLocalTime();
             
-            LocalDateTime appointmentEnd = appointment.getDateTime().plusMinutes(appointment.getDurationMinutes());
-            LocalDateTime requestedEnd = dateTime.plusMinutes(durationMinutes);
-            
-            if (!(requestedEnd.isBefore(appointment.getDateTime()) || 
-                  dateTime.isAfter(appointmentEnd))) {
+            if (appointmentDay == day && appointmentTime.equals(time)) {
                 return false;
             }
         }
@@ -216,110 +219,35 @@ public class Doctor extends Person {
 
 
     // Scheduling Part We Are Taking HELPP
-    public List<LocalDateTime> getAvailableSlots(LocalDateTime startDate, LocalDateTime endDate, int durationMinutes) {
-        List<LocalDateTime> availableSlots = new ArrayList<>();
-        LocalDateTime current = startDate;
-
-        // Only check working hours (9 AM to 5 PM)
-        while (current.isBefore(endDate)) {
-            // Skip weekends
-            if (current.getDayOfWeek().getValue() >= 6) {
-                current = current.plusDays(1).withHour(9).withMinute(0);
-                continue;
-            }
-
-            // Only check between 9 AM and 5 PM
-            if (current.getHour() >= 9 && current.getHour() < 17) {
-                if (isAvailable(current, durationMinutes)) {
-                    availableSlots.add(current);
-                }
-            }
-
-            // Move to next 30-minute slot
-            current = current.plusMinutes(30);
-
-            // If we've passed 5 PM, move to next day at 9 AM
-            if (current.getHour() >= 17) {
-                current = current.plusDays(1).withHour(9).withMinute(0);
-            }
+    public String getAvailableSlots(StaticSchedule.Day day) {
+        if (staticSchedule == null) {
+            return "No schedule available";
         }
-        return availableSlots;
+        return staticSchedule.getAvailableTimeSlotsAsString(day, appointments);
     }
 
-    public Appointment scheduleAppointment(Patient patient, LocalDateTime dateTime, int durationMinutes) {
-        // Check if the requested time is in the future
-        if (dateTime.isBefore(LocalDateTime.now())) {
-            System.out.println("Cannot schedule appointment in the past.");
-            return null;
-        }
-
-        // Work Hours Check
-        if (dateTime.getHour() < 9 || dateTime.getHour() >= 17) {
-            System.out.println("Appointments can only be scheduled between 9 AM and 5 PM.");
-            return null;
-        }
-
-        // Check if the requested time is on a weekend
-        if (dateTime.getDayOfWeek().getValue() >= 6) {
-            System.out.println("Appointments cannot be scheduled on weekends.");
-            return null;
-        }
-
-        if (!isAvailable(dateTime, durationMinutes)) {
+    public Appointment scheduleAppointment(Patient patient, StaticSchedule.Day day, LocalTime time, int durationMinutes) {
+        // Check if the time slot is available
+        if (!isAvailable(day, time, durationMinutes)) {
             System.out.println("Sorry, the selected time slot is not available.");
-            System.out.println("Here are the available slots for the next week:");
-            List<LocalDateTime> availableSlots = getAvailableSlots(
-                LocalDateTime.now().plusDays(1).withHour(9).withMinute(0),
-                LocalDateTime.now().plusWeeks(1),
-                durationMinutes
-            );
-            for (LocalDateTime slot : availableSlots) {
-                System.out.println(slot);
-            }
+            System.out.println("Available time slots:");
+            System.out.println(staticSchedule.getAvailableTimeSlotsAsString(day, appointments));
             return null;
         }
-
 
         id = id + 1;
         String textAppointmentIDC = String.valueOf(id);
         String appointmentId = "A" + textAppointmentIDC;
+        
+        // Convert day and time to LocalDateTime for the appointment
+        LocalDateTime dateTime = LocalDateTime.of(2025, 5, day.ordinal() + 19, time.getHour(), time.getMinute());
         Appointment appointment = new Appointment(appointmentId, patient, this, dateTime, durationMinutes);
         appointments.add(appointment);
         patient.addAppointment(appointment);
         return appointment;
     }
 
-    public void rescheduleAppointment(Appointment appointment, LocalDateTime newDateTime) {
-        if (appointments.contains(appointment) && isAvailable(newDateTime, appointment.getDurationMinutes())) {
-            appointment.setDateTime(newDateTime);
-            appointment.addNote("Appointment rescheduled to " + newDateTime);
-        } else {
-            System.out.println("Cannot reschedule appointment. The new time slot is not available.");
-        }
-    }
 
-    public List<Appointment> getUpcomingAppointments() {
-        List<Appointment> upcoming = new ArrayList<>();
-        LocalDateTime now = LocalDateTime.now();
-        
-        for (Appointment appointment : appointments) {
-            if (appointment.getDateTime().isAfter(now) && 
-                !appointment.getStatus().equals("Cancelled")) {
-                upcoming.add(appointment);
-            }
-        }
-        return upcoming;
-    }
 
-    public List<Appointment> getAppointmentsForDate(LocalDateTime date) {
-        List<Appointment> dayAppointments = new ArrayList<>();
-        
-        for (Appointment appointment : appointments) {
-            if (appointment.getDateTime().toLocalDate().equals(date.toLocalDate()) && 
-                !appointment.getStatus().equals("Cancelled")) {
-                dayAppointments.add(appointment);
-            }
-        }
-        return dayAppointments;
-    }
+
 }
