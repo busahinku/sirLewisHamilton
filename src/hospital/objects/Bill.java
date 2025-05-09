@@ -100,10 +100,6 @@ public class Bill {
         }
     }
 
-    public void addNote(String note) {
-        this.notes += "\n" + LocalDateTime.now() + ": " + note;
-    }
-
     public String GeneralInfo() {
         String paid = "";
         if (isPaid) {

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalTime;
 
+
+//--CHAT GPT SCHEDULING PART--
 public class StaticSchedule {
     // Define the fixed time slots from 9 AM to 5 PM with 30-minute intervals
     public static final List<LocalTime> TIME_SLOTS = new ArrayList<>();

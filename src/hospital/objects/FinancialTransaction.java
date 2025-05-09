@@ -33,7 +33,4 @@ public class FinancialTransaction {
         return description;
     }
 
-    public LocalDateTime getDate() {
-        return date;
-    }
 } 

@@ -3,7 +3,7 @@ package hospital.objects;
 import java.time.LocalDateTime;
 
 public class Room {
-    private String roomNumber;
+    private String roomName;
     private String roomType; // e.g., "General", "ICU", "Operating", "Emergency"
     private int capacity;
     private boolean isAvailable;
@@ -13,8 +13,8 @@ public class Room {
     private String equipment; // List of equipment in the room
     private String notes;
 
-    public Room(String roomNumber, String roomType, int capacity, double hourlyRate, String equipment) {
-        this.roomNumber = roomNumber;
+    public Room(String roomName, String roomType, int capacity, double hourlyRate, String equipment) {
+        this.roomName = roomName;
         this.roomType = roomType;
         this.capacity = capacity;
         this.isAvailable = true;
@@ -26,8 +26,8 @@ public class Room {
     }
 
     // Getters
-    public String getRoomNumber() {
-        return roomNumber;
+    public String getRoomName() {
+        return roomName;
     }
 
     public String getRoomType() {
@@ -68,15 +68,15 @@ public class Room {
             this.currentPatient = patient;
             this.isAvailable = false;
             this.occupiedSince = LocalDateTime.now();
-            System.out.println("Patient " + patient.getFullName() + " assigned to room " + roomNumber);
+            System.out.println("Patient " + patient.getFullName() + " assigned to room " + roomName);
         } else {
-            System.out.println("Room " + roomNumber + " is already occupied");
+            System.out.println("Room " + roomName + " is already occupied");
         }
     }
 
     public void dischargePatient() {
         if (this.currentPatient != null) {
-            System.out.println("Patient " + currentPatient.getFullName() + " discharged from room " + roomNumber);
+            System.out.println("Patient " + currentPatient.getFullName() + " discharged from room " + roomName);
             this.currentPatient = null;
             this.isAvailable = true;
             this.occupiedSince = null;
@@ -107,18 +107,10 @@ public class Room {
             status = "Available";
         }
 
-        return "Room [Number: " + roomNumber +
+        return "Room [Name: " + roomName +
                 ", Type: " + roomType +
                 ", Rate: $" + String.format("%.2f", hourlyRate) + "/hr" +
                 ", Equipment: " + equipment +
                 ", Status: " + status + "]";
     }
-
-    public void setHourlyRate(double hourlyRate) {
-        this.hourlyRate = hourlyRate;
-    }
-
-    public void setEquipment(String equipment) {
-        this.equipment = equipment;
-    }
-} 
+}

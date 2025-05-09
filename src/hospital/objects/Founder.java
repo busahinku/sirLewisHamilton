@@ -106,29 +106,11 @@ public class Founder extends Person {
     }
 
     public void generateStartupReport() {
-        double startupCosts = 0.0;
-        List<FinancialTransaction> startupTransactions = new ArrayList<>();
-        
-        // Calculate initial setup costs
-        for (Department dept : departments) {
-            startupCosts += 50000.0; // Base setup cost per department
-        }
-        
-        for (Doctor doc : doctors) {
-            startupCosts += doc.getSalary();
-        }
-        
-        startupTransactions.add(new FinancialTransaction("Expense", -startupCosts, "Startup Costs", "Initial hospital setup"));
-        
         HospitalReport startupReport = new HospitalReport(
             "Startup Report",
             departments.size(),
             doctors.size(),
-            0.0, // No initial revenue
-            startupCosts,
-            -startupCosts,
-            startupTransactions
-        );
+            0.0,10000,10000,transactions);
         reports.add(startupReport);
     }
 

@@ -153,7 +153,7 @@ public class Patient extends Person {
 
     public String GeneralInfo() {
         String insurance = hasInsurance ? insuranceProvider : "None";
-        String room = (currentRoom != null) ? currentRoom.getRoomNumber() : "None";
+        String room = (currentRoom != null) ? currentRoom.getRoomName() : "None";
 
         return "Patient [Name: " + getFullName() +
                 ", Age: " + getAge() +

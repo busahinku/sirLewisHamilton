@@ -55,6 +55,10 @@ public class Person {
         return username;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     // Setters
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;

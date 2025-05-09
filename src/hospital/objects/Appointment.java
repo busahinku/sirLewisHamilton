@@ -88,10 +88,6 @@ public class Appointment {
         return notes;
     }
 
-    // Setters
-    public void setDateTime(LocalDateTime dateTime) { // How this code works? GPT gave the code for arranging time.
-        this.dateTime = dateTime;
-    }
 
     public void setCompleted(boolean completed) {
         this.isCompleted = completed;
@@ -107,10 +103,6 @@ public class Appointment {
         }
     }
 
-    public void cancelAppointment() {
-        this.status = "Cancelled";
-        System.out.println("Appointment " + appointmentId + " has been cancelled");
-    }
 
     public void addNote(String note) {
         this.notes += "\n" + LocalDateTime.now() + "| " + note;

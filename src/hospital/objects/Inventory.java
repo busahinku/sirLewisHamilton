@@ -14,7 +14,6 @@ public class Inventory {
     private String supplier;
     private LocalDateTime lastRestocked;
     private String location;
-    private List<InventoryTransaction> transactions;
     private String notes;
 
     public Inventory(String itemId, String itemName, String category, int quantity,
@@ -28,7 +27,6 @@ public class Inventory {
         this.supplier = supplier;
         this.lastRestocked = LocalDateTime.now();
         this.location = location;
-        this.transactions = new ArrayList<>();
         this.notes = "";
     }
 
@@ -69,10 +67,6 @@ public class Inventory {
         return location;
     }
 
-    public List<InventoryTransaction> getTransactions() {
-        return new ArrayList<>(transactions);
-    }
-
     public String getNotes() {
         return notes;
     }
@@ -81,13 +75,11 @@ public class Inventory {
     public void addStock(int amount) {
         this.quantity += amount;
         this.lastRestocked = LocalDateTime.now();
-        transactions.add(new InventoryTransaction("Restock", amount, unitPrice));
     }
 
     public void removeStock(int amount) {
         if (this.quantity >= amount) {
             this.quantity -= amount;
-            transactions.add(new InventoryTransaction("Usage", -amount, unitPrice));
         } else {
             System.out.println("Insufficient stock available");
         }
@@ -112,40 +104,5 @@ public class Inventory {
                 ", Quantity: " + quantity +
                 ", Price: $" + String.format("%.2f", unitPrice) +
                 ", Location: " + location + "]";
-    }
-
-    // Inner class for inventory transactions
-    public static class InventoryTransaction {
-        private String type; // "Restock" or "Usage"
-        private int quantity;
-        private double unitPrice;
-        private LocalDateTime transactionDate;
-
-        public InventoryTransaction(String type, int quantity, double unitPrice) {
-            this.type = type;
-            this.quantity = quantity;
-            this.unitPrice = unitPrice;
-            this.transactionDate = LocalDateTime.now();
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public int getQuantity() {
-            return quantity;
-        }
-
-        public double getUnitPrice() {
-            return unitPrice;
-        }
-
-        public LocalDateTime getTransactionDate() {
-            return transactionDate;
-        }
-
-        public double getTotalValue() {
-            return quantity * unitPrice;
-        }
     }
 } 

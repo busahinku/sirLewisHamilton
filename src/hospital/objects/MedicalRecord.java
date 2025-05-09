@@ -35,6 +35,22 @@ public class MedicalRecord {
         this.notes = "";
     }
 
+    public MedicalRecord(Patient patient) {
+        this.recordId = null;
+        this.patient = patient;
+        this.bloodType = null;
+        this.height = 000;
+        this.weight = 000;
+        this.diagnoses = new ArrayList<>();
+        this.procedures = new ArrayList<>();
+        this.medications = new ArrayList<>();
+        this.allergies = new ArrayList<>();
+        this.immunizations = new ArrayList<>();
+        this.labResults = new ArrayList<>();
+        this.lastUpdated = LocalDateTime.now();
+        this.notes = "";
+    }
+
     // Getters
     public String getRecordId() {
         return recordId;

@@ -122,14 +122,7 @@ public class Doctor extends Person {
     }
 
     // Methods
-    public void addAppointment(Appointment appointment) {
-        if (!appointments.contains(appointment)) {
-            appointments.add(appointment);
-            if (!patients.contains(appointment.getPatient())) {
-                patients.add(appointment.getPatient());
-            }
-        }
-    }
+
 
     public void cancelAppointment(Appointment appointment) {
         if (appointments.contains(appointment)) {
@@ -165,17 +158,6 @@ public class Doctor extends Person {
         } else {
             // For hospital doctors, cost is based on their salary and experience
             return (salary / (30 * 8 * 60)) * durationMinutes; // Convert monthly salary to per-minute rate
-        }
-    }
-
-    public void prescribeMedication(Patient patient, String medication, String dosage, String instructions) {
-        Prescription prescription = new Prescription(medication, dosage, instructions, patient, this, "No additional notes");
-        patient.addPrescription(prescription);
-    }
-
-    public void updatePatientMedicalRecord(Patient patient, String diagnosis, String procedure, String labResult) {
-        if (patient.getMedicalRecord() != null) {
-            patient.updateMedicalRecord(diagnosis, procedure, labResult);
         }
     }
 
@@ -217,8 +199,6 @@ public class Doctor extends Person {
     }
 
 
-
-    // Scheduling Part We Are Taking HELPP
     public String getAvailableSlots(StaticSchedule.Day day) {
         if (staticSchedule == null) {
             return "No schedule available";
@@ -227,7 +207,7 @@ public class Doctor extends Person {
     }
 
     public Appointment scheduleAppointment(Patient patient, StaticSchedule.Day day, LocalTime time, int durationMinutes) {
-        // Check if the time slot is available
+        // Availability of the time.
         if (!isAvailable(day, time, durationMinutes)) {
             System.out.println("Sorry, the selected time slot is not available.");
             System.out.println("Available time slots:");
@@ -237,7 +217,7 @@ public class Doctor extends Person {
 
         id = id + 1;
         String textAppointmentIDC = String.valueOf(id);
-        String appointmentId = "A" + textAppointmentIDC;
+        String appointmentId = "SIRL" + textAppointmentIDC;
         
         // Convert day and time to LocalDateTime for the appointment
         LocalDateTime dateTime = LocalDateTime.of(2025, 5, day.ordinal() + 19, time.getHour(), time.getMinute());
@@ -246,8 +226,4 @@ public class Doctor extends Person {
         patient.addAppointment(appointment);
         return appointment;
     }
-
-
-
-
 }

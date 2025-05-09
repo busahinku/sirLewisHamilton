@@ -93,13 +93,12 @@ public class PrivateDoctors extends Person {
     }
 
     public String GeneralInfo() {
-        String info = "Private Doctor [Name: " + getFullName() +
+       return "Private Doctor [Name: " + getFullName() +
                 ", Clinic: " + clinicName +
                 ", Address: " + clinicAddress +
                 ", Specialty: " + specialty +
                 ", Fee: $" + String.format("%.2f", appointmentFee) + "/min" +
                 ", Experience: " + experience + " years" +
                 ", Total Salary: $" + String.format("%.2f", calculateTotalSalary()) + "]";
-        return info;
     }
 }
