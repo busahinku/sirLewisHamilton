@@ -7,6 +7,7 @@ import java.util.List;
 public class Founder extends Person {
     private List<Department> departments;
     private List<Doctor> doctors;
+    private List<Room> rooms;
     private double totalRevenue;
     private double totalExpenses;
     private double salary;
@@ -18,6 +19,7 @@ public class Founder extends Person {
         super(id, firstName, lastName, age, gender, phoneNumber, username, password);
         this.departments = new ArrayList<>();
         this.doctors = new ArrayList<>();
+        this.rooms = new ArrayList<>();
         this.totalRevenue = 0.0;
         this.totalExpenses = 0.0;
         this.salary = salary;
@@ -56,6 +58,10 @@ public class Founder extends Person {
 
     public List<HospitalReport> getReports() {
         return new ArrayList<>(reports);
+    }
+
+    public List<Room> getRooms() {
+        return new ArrayList<>(rooms);
     }
 
     // Methods
@@ -117,6 +123,10 @@ public class Founder extends Person {
     public String getFinancialSummary() {
         return String.format("Financial Summary [Revenue: $%.2f, Expenses: $%.2f, Net Income: $%.2f]",
                 totalRevenue, totalExpenses, getNetIncome());
+    }
+
+    public void addRoom(Room room) {
+        rooms.add(room);
     }
 }
 

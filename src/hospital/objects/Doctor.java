@@ -224,6 +224,9 @@ public class Doctor extends Person {
         Appointment appointment = new Appointment(appointmentId, patient, this, dateTime, durationMinutes);
         appointments.add(appointment);
         patient.addAppointment(appointment);
+        if (!patients.contains(patient)) {
+            patients.add(patient);
+        }
         return appointment;
     }
 }
