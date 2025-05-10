@@ -12,7 +12,8 @@ public class Appointment {
     private double hospitalRevenue;
     private double privateDoctorRevenue;
     private boolean isCompleted;
-    private String status; // "Scheduled", "Completed", "Cancelled"
+    private String status;
+
 
     public String getStatus() {
         return status;
@@ -28,18 +29,20 @@ public class Appointment {
     }
     private String notes;
 
+
+    // Constructors:
     public Appointment(String appointmentId, Patient patient, Doctor doctor,
-                      LocalDateTime dateTime, int durationMinutes) {
+                      LocalDateTime dateTime) {
         this.appointmentId = appointmentId;
         this.patient = patient;
         this.doctor = doctor;
         this.dateTime = dateTime;
-        this.durationMinutes = durationMinutes;
+        this.durationMinutes = 30;
         this.isCompleted = false;
         this.status = "Scheduled";
         this.notes = "";
         
-        // Calculate cost and hospital revenue
+        // Calculate cost and hospital revenue, if doctor is private appointment fee directly goes to hospital if it is not 10% is the comission of the hospital.
         if (doctor.isPrivate()) {
             this.cost = doctor.getAppointmentFee() * durationMinutes;
             this.hospitalRevenue = this.cost * 0.10; // 10% goes to hospital
@@ -75,9 +78,6 @@ public class Appointment {
         return cost;
     }
 
-    public double getHospitalRevenue() {
-        return hospitalRevenue;
-    }
 
     public boolean isCompleted() {
         return isCompleted;
@@ -99,7 +99,7 @@ public class Appointment {
         }
 
         if (completed) {
-            System.out.println("Appointment " + appointmentId + "[" + getPatient() + "->" + getDoctor() + "]" + " marked as completed");
+            System.out.println("Appointment " + appointmentId + "[" + getPatient() + "->" + getDoctor() + "]" + " completed");
         }
     }
 

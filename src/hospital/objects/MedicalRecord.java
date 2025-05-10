@@ -135,11 +135,6 @@ public class MedicalRecord {
         updateLastModified();
     }
 
-    public void updateVitals(double height, double weight) {
-        this.height = height;
-        this.weight = weight;
-        updateLastModified();
-    }
 
     public void addNote(String note) {
         this.notes += "\n" + LocalDateTime.now() + ": " + note;

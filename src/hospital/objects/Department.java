@@ -66,7 +66,7 @@ public class Department {
         
         for (Doctor doctor : doctors) {
             info.append("- ").append(doctor.getFullName())
-                .append(" (").append(doctor.getSpecialty()).append(")\n");
+                .append(" | ").append(doctor.getSpecialty()).append(" |\n");
         }
         
         return info.toString();

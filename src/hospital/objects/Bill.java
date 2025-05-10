@@ -106,6 +106,6 @@ public class Bill {
             paid = "Paid";
         }
         else { paid = "Unpaid"; }
-        return "Bill [ID:" +billId+", Patient: "+patient.getFullName()+", Total: $"+totalAmount+", Paid: "+paidAmount+", Status: "+paid+"]";
+        return "Bill ID:" +billId+", for "+patient.getFullName()+", Total: $"+totalAmount+", Paid: "+paidAmount+", Status: "+paid+"]";
     }
 } 

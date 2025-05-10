@@ -85,18 +85,6 @@ public class Inventory {
         }
     }
 
-    public void updateMinimumQuantity(int newMinimum) {
-        this.minimumQuantity = newMinimum;
-    }
-
-    public void updateUnitPrice(double newPrice) {
-        this.unitPrice = newPrice;
-    }
-
-    public void addNote(String note) {
-        this.notes += "\n" + LocalDateTime.now() + ": " + note;
-    }
-
     public String GeneralInfo() {
         return "Inventory [ID: " + itemId +
                 ", Name: " + itemName +

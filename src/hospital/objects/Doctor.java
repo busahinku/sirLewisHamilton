@@ -97,24 +97,16 @@ public class Doctor extends Person {
         this.specialty = specialty;
     }
 
-    public void setOfficeNumber(String officeNumber) {
-        this.officeNumber = officeNumber;
-    }
-
     public void setSalary(double salary) {
         this.salary = salary;
     }
 
     public void setAppointmentFee(double appointmentFee) {
-        if (isPrivate) {
             this.appointmentFee = appointmentFee;
-        }
     }
 
     public void setPrivatePracticeLocation(String location) {
-        if (isPrivate) {
             this.privatePracticeLocation = location;
-        }
     }
 
     public void setStaticSchedule(StaticSchedule schedule) {
@@ -122,19 +114,10 @@ public class Doctor extends Person {
     }
 
     // Methods
-
-
     public void cancelAppointment(Appointment appointment) {
-        if (appointments.contains(appointment)) {
             appointments.remove(appointment);
             // Update the status of the appointment
             appointment.setStatus("Cancelled");
-            // Add a note about the cancellation
-            appointment.addNote("Appointment cancelled by patient");
-            System.out.println("Appointment cancelled successfully.");
-        } else {
-            System.out.println("Appointment not found in doctor's schedule.");
-        }
     }
 
     public void addReview(Review review) {
@@ -156,7 +139,6 @@ public class Doctor extends Person {
         if (isPrivate) {
             return appointmentFee * durationMinutes;
         } else {
-            // For hospital doctors, cost is based on their salary and experience
             return (salary / (30 * 8 * 60)) * durationMinutes; // Convert monthly salary to per-minute rate
         }
     }
@@ -175,7 +157,7 @@ public class Doctor extends Person {
         }
     }
 
-    public boolean isAvailable(StaticSchedule.Day day, LocalTime time, int durationMinutes) {
+    public boolean isAvailable(StaticSchedule.Day day, LocalTime time) {
         if (staticSchedule == null) {
             return false;
         }
@@ -199,16 +181,9 @@ public class Doctor extends Person {
     }
 
 
-    public String getAvailableSlots(StaticSchedule.Day day) {
-        if (staticSchedule == null) {
-            return "No schedule available";
-        }
-        return staticSchedule.getAvailableTimeSlotsAsString(day, appointments);
-    }
-
-    public Appointment scheduleAppointment(Patient patient, StaticSchedule.Day day, LocalTime time, int durationMinutes) {
+    public Appointment scheduleAppointment(Patient patient, StaticSchedule.Day day, LocalTime time) {
         // Availability of the time.
-        if (!isAvailable(day, time, durationMinutes)) {
+        if (!isAvailable(day, time)) {
             System.out.println("Sorry, the selected time slot is not available.");
             System.out.println("Available time slots:");
             System.out.println(staticSchedule.getAvailableTimeSlotsAsString(day, appointments));
@@ -221,7 +196,7 @@ public class Doctor extends Person {
         
         // Convert day and time to LocalDateTime for the appointment
         LocalDateTime dateTime = LocalDateTime.of(2025, 5, day.ordinal() + 19, time.getHour(), time.getMinute());
-        Appointment appointment = new Appointment(appointmentId, patient, this, dateTime, durationMinutes);
+        Appointment appointment = new Appointment(appointmentId, patient, this, dateTime);
         appointments.add(appointment);
         patient.addAppointment(appointment);
         if (!patients.contains(patient)) {

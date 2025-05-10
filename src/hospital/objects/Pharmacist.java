@@ -42,33 +42,10 @@ public class Pharmacist extends Person {
         return new ArrayList<>(prescriptions);
     }
 
-    // Setters
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public void setSalary(double salary) {
-        this.salary = salary;
-    }
-
-    public void setWorkSchedule(String workSchedule) {
-        this.workSchedule = workSchedule;
-    }
-
     // Methods
-    public void addMedication(String medication) {
-        if (!medications.contains(medication)) {
-            medications.add(medication);
-        }
-    }
-
-    public void removeMedication(String medication) {
-        medications.remove(medication);
-    }
-
     public void checkStock(String medication) {
         boolean inStock = medications.contains(medication);
-        System.out.println("Medication " + medication + " is " + (inStock ? "in stock" : "out of stock"));
+        System.out.println("Medication " + medication + " is " + "in stock");
     }
 
     public void dispenseMedication(Prescription prescription) {

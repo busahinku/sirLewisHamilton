@@ -17,20 +17,4 @@ public class FinancialTransaction {
         this.date = LocalDateTime.now();
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
 } 

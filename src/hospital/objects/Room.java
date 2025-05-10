@@ -91,10 +91,6 @@ public class Room {
         return 0.0;
     }
 
-    public void addEquipment(String newEquipment) {
-        this.equipment += ", " + newEquipment;
-    }
-
     public void addNote(String note) {
         this.notes += "\n" + LocalDateTime.now() + ": " + note;
     }

@@ -111,15 +111,6 @@ public class Founder extends Person {
         reports.add(report);
     }
 
-    public void generateStartupReport() {
-        HospitalReport startupReport = new HospitalReport(
-            "Startup Report",
-            departments.size(),
-            doctors.size(),
-            0.0,10000,10000,transactions);
-        reports.add(startupReport);
-    }
-
     public String getFinancialSummary() {
         return String.format("Financial Summary [Revenue: $%.2f, Expenses: $%.2f, Net Income: $%.2f]",
                 totalRevenue, totalExpenses, getNetIncome());

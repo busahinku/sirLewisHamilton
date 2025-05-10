@@ -67,7 +67,7 @@ public class Assistant extends Person {
         this.workSchedule = workSchedule;
     }
 
-    // Methods
+    // String Methods These not return something so we cant use these from JavaFX application
     public void callDoctor(Doctor doctor) {
         System.out.println("Assistant " + getFullName() + " calling Dr. " + doctor.getFullName());
     }

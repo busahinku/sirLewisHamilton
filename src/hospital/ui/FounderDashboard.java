@@ -847,8 +847,6 @@ public class FounderDashboard {
         // Reports (show latest after generating)
         Button btnMonthlyReport = new Button("Generate Monthly Report");
         btnMonthlyReport.setStyle("-fx-background-color: #2563eb; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 8;");
-        Button btnStartupReport = new Button("Generate Startup Report");
-        btnStartupReport.setStyle("-fx-background-color: #2563eb; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 8;");
         Button btnAddRevenue = new Button("Add Revenue");
         btnAddRevenue.setStyle("-fx-background-color: #22c55e; -fx-text-fill: white; -fx-font-size: 15; -fx-background-radius: 8;");
         Button btnAddExpense = new Button("Add Expense");
@@ -867,23 +865,9 @@ public class FounderDashboard {
                 );
             }
         });
-        btnStartupReport.setOnAction(e -> {
-            founder.generateStartupReport();
-            var rpts = founder.getReports();
-            if (!rpts.isEmpty()) {
-                var report = rpts.get(rpts.size() - 1);
-                showAlert(report.getTitle(),
-                    "Departments: " + report.getDepartmentCount() +
-                    "\nDoctors: " + report.getDoctorCount() +
-                    "\nTotal Revenue: $" + report.getTotalRevenue() +
-                    "\nTotal Expenses: $" + report.getTotalExpenses() +
-                    "\nNet Income: $" + report.getNetIncome()
-                );
-            }
-        });
         btnAddRevenue.setOnAction(e -> showAddRevenueDialog(founder, financialSummary));
         btnAddExpense.setOnAction(e -> showAddExpenseDialog(founder, financialSummary));
-        HBox reportBtns = new HBox(12, btnMonthlyReport, btnStartupReport, btnAddRevenue, btnAddExpense);
+        HBox reportBtns = new HBox(12, btnMonthlyReport, btnAddRevenue, btnAddExpense);
         reportBtns.setPadding(new Insets(24, 0, 0, 0));
         reportBtns.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
         mainPage.getChildren().clear();

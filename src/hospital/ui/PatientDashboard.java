@@ -349,11 +349,11 @@ public class PatientDashboard {
                 }
                 int duration = 20; // Default duration, or you can add a field for this
                 StaticSchedule.Day day = StaticSchedule.Day.values()[slot.getDayOfWeek().getValue() - 1];
-                if (!doc.isAvailable(day, slot.toLocalTime(), duration)) {
+                if (!doc.isAvailable(day, slot.toLocalTime())) {
                     showAlert("Error", "This time slot is no longer available for this doctor.");
                     return;
                 }
-                Appointment appt = doc.scheduleAppointment(patient, day, slot.toLocalTime(), duration);
+                Appointment appt = doc.scheduleAppointment(patient, day, slot.toLocalTime());
                 showAlert("Appointment Created", "Appointment created successfully.");
                 btnAppointments.fire();
             });

@@ -22,7 +22,4 @@ public class BillItem {
         return amount;
     }
 
-    public LocalDateTime getDateAdded() {
-        return dateAdded;
-    }
 }

@@ -94,10 +94,6 @@ public class Patient extends Person {
         }
     }
 
-    public void cancelAppointment(Appointment appointment) {
-        appointments.remove(appointment);
-    }
-
     public void addPrescription(Prescription prescription) {
         if (!prescriptions.contains(prescription)) {
             prescriptions.add(prescription);
@@ -115,7 +111,7 @@ public class Patient extends Person {
 
     public void payBill(Bill bill, double amount, String paymentMethod) {
         if (bills.contains(bill)) {
-            bill.makePayment(amount, paymentMethod);
+            bill.makePayment(amount, paymentMethod); // Add paid amount and print result.
             if (bill.isPaid()) {
                 balance -= bill.getTotalAmount();
             } else {
@@ -126,29 +122,6 @@ public class Patient extends Person {
 
     public void setBalance(double balance) {
         this.balance = balance;
-    }
-
-    public void updateMedicalRecord(String diagnosis, String procedure, String labResult) {
-        if (medicalRecord != null) {
-            if (diagnosis != null) medicalRecord.addDiagnosis(diagnosis);
-            if (procedure != null) medicalRecord.addProcedure(procedure);
-            if (labResult != null) medicalRecord.addLabResult(labResult);
-        }
-    }
-
-    public void checkIn(Room room) {
-        if (currentRoom != null) {
-            currentRoom.dischargePatient();
-        }
-        room.assignPatient(this);
-        currentRoom = room;
-    }
-
-    public void checkOut() {
-        if (currentRoom != null) {
-            currentRoom.dischargePatient();
-            currentRoom = null;
-        }
     }
 
     public String GeneralInfo() {
