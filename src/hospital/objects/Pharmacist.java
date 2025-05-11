@@ -48,13 +48,12 @@ public class Pharmacist extends Person {
         System.out.println("Medication " + medication + " is " + "in stock");
     }
 
-    public void dispenseMedication(Prescription prescription) {
+    public void distributeMedication(Prescription prescription) {
         if (medications.contains(prescription.getMedication())) {
             prescriptions.add(prescription);
             System.out.println("Dispensing medication for prescription: " + prescription.GeneralInfo());
-            // Implementation would include checking stock, updating inventory, etc.
         } else {
-            System.out.println("Cannot dispense: Medication " + prescription.getMedication() + " is out of stock");
+            System.out.println("Cannot Distributed: Medication, because " + prescription.getMedication() + " is out of stock");
         }
     }
 
@@ -66,6 +65,7 @@ public class Pharmacist extends Person {
         prescriptions.remove(prescription);
     }
 
+    @Override
     public String GeneralInfo() {
         return "Pharmacist [Name: " + getFullName() +
                 ", Location: " + location +

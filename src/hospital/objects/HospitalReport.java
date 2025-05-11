@@ -1,6 +1,5 @@
 package hospital.objects;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +11,6 @@ public class HospitalReport {
     private double totalExpenses;
     private double netIncome;
     private List<FinancialTransaction> transactions;
-    private LocalDateTime generationDate;
 
     public HospitalReport(String title, int departmentCount, int doctorCount,
                          double totalRevenue, double totalExpenses, double netIncome,
@@ -24,7 +22,6 @@ public class HospitalReport {
         this.totalExpenses = totalExpenses;
         this.netIncome = netIncome;
         this.transactions = new ArrayList<>(transactions);
-        this.generationDate = LocalDateTime.now();
     }
 
     public String getTitle() {
@@ -55,17 +52,12 @@ public class HospitalReport {
         return new ArrayList<>(transactions);
     }
 
-    public LocalDateTime getGenerationDate() {
-        return generationDate;
-    }
-
     public String getReportSummary() {
         return "Report: " + title + "\n" +
                 "Departments: " + departmentCount + "\n" +
                 "Doctors: " + doctorCount + "\n" +
-                "Revenue: $" + String.format("%.2f", totalRevenue) + "\n" +
-                "Expenses: $" + String.format("%.2f", totalExpenses) + "\n" +
-                "Net Income: $" + String.format("%.2f", netIncome) + "\n" +
-                "Generated: " + generationDate;
+                "Revenue: $" + totalRevenue + "\n" +
+                "Expenses: $" + totalExpenses + "\n" +
+                "Net Income: $" + netIncome + "\n";
     }
 } 

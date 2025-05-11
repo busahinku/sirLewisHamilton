@@ -92,13 +92,14 @@ public class PrivateDoctors extends Person {
         return totalSalary;
     }
 
+    @Override
     public String GeneralInfo() {
-       return "Private Doctor [Name: " + getFullName() +
+        return "Private Doctor Name: " + getFullName() +
                 ", Clinic: " + clinicName +
                 ", Address: " + clinicAddress +
                 ", Specialty: " + specialty +
-                ", Fee: $" + String.format("%.2f", appointmentFee) + "/min" +
+                ", Fee: $" + appointmentFee + "/min" +
                 ", Experience: " + experience + " years" +
-                ", Total Salary: $" + String.format("%.2f", calculateTotalSalary()) + "]";
+                ", Total Salary: $" + calculateTotalSalary();
     }
 }

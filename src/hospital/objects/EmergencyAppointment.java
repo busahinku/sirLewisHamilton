@@ -2,10 +2,11 @@ package hospital.objects;
 
 import java.time.LocalDateTime;
 
-public class Appointment extends BaseAppointment {
-    private final CostCalculationStrategy costStrategy;
+public class EmergencyAppointment extends BaseAppointment {
+    private CostCalculationStrategy costStrategy;
+    private static double EMERGENCY_MULTIPLIER = 1.5; // 50% more expensive
 
-    public Appointment(String appointmentId, Patient patient, Doctor doctor, LocalDateTime dateTime) {
+    public EmergencyAppointment(String appointmentId, Patient patient, Doctor doctor, LocalDateTime dateTime) {
         super(appointmentId, patient, doctor, dateTime);
         if (doctor.isPrivate()) {
             this.costStrategy = new PrivateDoctorCostStrategy();
@@ -16,7 +17,8 @@ public class Appointment extends BaseAppointment {
     }
 
     private void calculateAndSetCosts() {
-        this.cost = costStrategy.calculateCost(doctor, durationMinutes);
+        double baseCost = costStrategy.calculateCost(doctor, durationMinutes);
+        this.cost = baseCost * EMERGENCY_MULTIPLIER;
         this.hospitalRevenue = costStrategy.calculateHospitalRevenue(cost);
         this.privateDoctorRevenue = costStrategy.calculateDoctorRevenue(cost);
     }
@@ -30,9 +32,9 @@ public class Appointment extends BaseAppointment {
     public void handleStatusChange(String newStatus) {
         this.status = newStatus;
         if (newStatus.equals("Completed")) {
-            System.out.println("Appointment " + appointmentId
+            System.out.println("EMERGENCY Appointment " + appointmentId
                     + getPatient().getFullName() + "->" + getDoctor().getFullName() +
                 " completed");
         }
     }
-}
+} 

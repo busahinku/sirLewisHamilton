@@ -139,31 +139,30 @@ public class Doctor extends Person {
         if (isPrivate) {
             return appointmentFee * durationMinutes;
         } else {
-            return (salary / (30 * 8 * 60)) * durationMinutes; // Convert monthly salary to per-minute rate
+            return (salary / (30 * 10 * 60)) * durationMinutes; // day * hour * minute
         }
     }
 
+    @Override
     public String GeneralInfo() {
-        String baseInfo = "Doctor [Name: " + getFullName() +
+        String Info = "Doctor Name: " + getFullName() +
                 ", Specialty: " + specialty +
-                ", Experience: " + experience + " years]";
+                ", Experience: " + experience + " years.";
 
+        String result;
         if (isPrivate) {
-            return baseInfo + ", Private Practice at: " + privatePracticeLocation +
+            result = Info + ", Private Practice at: " + privatePracticeLocation +
                     ", Fee: $" + appointmentFee;
         } else {
-            return baseInfo + ", Department: " + department +
+            result = Info + ", Department: " + department +
                     ", Office: " + officeNumber;
         }
+        return result;
     }
 
     public boolean isAvailable(StaticSchedule.Day day, LocalTime time) {
-        if (staticSchedule == null) {
-            return false;
-        }
-        
-        // Check if the time slot exists in our static schedule
-        if (!staticSchedule.isTimeSlotAvailable(day, time)) {
+    
+        if (!staticSchedule.isTimeSlotAvailable(day, time) || staticSchedule == null ) {
             return false;
         }
 
@@ -192,12 +191,13 @@ public class Doctor extends Person {
 
         id = id + 1;
         String textAppointmentIDC = String.valueOf(id);
-        String appointmentId = "SIRL" + textAppointmentIDC;
+        String appointmentId = "APP" + textAppointmentIDC;
         
         // Convert day and time to LocalDateTime for the appointment
-        LocalDateTime dateTime = LocalDateTime.of(2025, 5, day.ordinal() + 19, time.getHour(), time.getMinute());
+        LocalDateTime dateTime = LocalDateTime.of(2025, 5, 26, 9, 0);
         Appointment appointment = new Appointment(appointmentId, patient, this, dateTime);
         appointments.add(appointment);
+        
         patient.addAppointment(appointment);
         if (!patients.contains(patient)) {
             patients.add(patient);

@@ -396,7 +396,7 @@ public class PatientDashboard {
                         double unpaid = bill.getTotalAmount() - bill.getPaidAmount();
                         payBtn.setDisable(patient.getBalance() < unpaid);
                         payBtn.setOnAction(ev -> {
-                            patient.payBill(bill, unpaid, "Card");
+                            patient.payBill(bill, unpaid);
                             showAlert("Bill Paid", "Bill paid successfully.");
                             btnBills.fire();
                         });

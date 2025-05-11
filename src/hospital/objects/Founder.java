@@ -100,7 +100,7 @@ public class Founder extends Person {
 
     public void generateMonthlyReport() {
         HospitalReport report = new HospitalReport(
-            "Monthly Report - " + LocalDateTime.now().getMonth(),
+            "Monthly Report -  MAY",
             departments.size(),
             doctors.size(),
             totalRevenue,
@@ -112,12 +112,25 @@ public class Founder extends Person {
     }
 
     public String getFinancialSummary() {
-        return String.format("Financial Summary [Revenue: $%.2f, Expenses: $%.2f, Net Income: $%.2f]",
-                totalRevenue, totalExpenses, getNetIncome());
+        String summary = "Financial Summary, Revenue: " + totalRevenue +
+                ", Expenses: $" + totalExpenses +
+                ", Net Income: $" + getNetIncome();
+        System.out.println(summary);
+        return "";
     }
 
     public void addRoom(Room room) {
         rooms.add(room);
+    }
+
+    @Override
+    public String GeneralInfo() {
+        return "Founder [Name: " + getFullName() +
+                ", Departments: " + departments.size() +
+                ", Doctors: " + doctors.size() +
+                ", Rooms: " + rooms.size() +
+                ", Salary: $" + salary +
+                ", Net Income: $" + getNetIncome();
     }
 }
 

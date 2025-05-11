@@ -146,10 +146,10 @@ public class MedicalRecord {
     }
 
     public String GeneralInfo() {
-        return "Medical Record [ID: " + recordId +
+        return "Medical Record ID: " + recordId +
                 ", Patient: " + patient.getFullName() +
                 ", Last Updated: " + lastUpdated +
                 ", Diagnoses: " + diagnoses.size() +
-                ", Procedures: " + procedures.size() + "]";
+                ", Procedures: " + procedures.size();
     }
 } 

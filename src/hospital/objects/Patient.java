@@ -109,9 +109,9 @@ public class Patient extends Person {
         }
     }
 
-    public void payBill(Bill bill, double amount, String paymentMethod) {
+    public void payBill(Bill bill, double amount) {
         if (bills.contains(bill)) {
-            bill.makePayment(amount, paymentMethod); // Add paid amount and print result.
+            bill.makePayment(amount); // Add paid amount and print result.
             if (bill.isPaid()) {
                 balance -= bill.getTotalAmount();
             } else {
@@ -124,14 +124,25 @@ public class Patient extends Person {
         this.balance = balance;
     }
 
+    @Override
     public String GeneralInfo() {
-        String insurance = hasInsurance ? insuranceProvider : "None";
-        String room = (currentRoom != null) ? currentRoom.getRoomName() : "None";
+        String insurance;
+        if (hasInsurance) {
+            insurance = insuranceProvider;
+        } else {
+            insurance = "None";
+        }
+        String room;
+        if (currentRoom != null) {
+            room = currentRoom.getRoomName();
+        } else {
+            room = "None";
+        }
 
         return "Patient [Name: " + getFullName() +
                 ", Age: " + getAge() +
                 ", Insurance: " + insurance +
-                ", Balance: $" + String.format("%.2f", balance) +
-                ", Current Room: " + room + "]";
+                ", Balance: $" + balance +
+                ", Current Room: " + room;
     }
 }

@@ -58,17 +58,13 @@ public class Department {
     }
 
     public String GeneralInfo() {
-        StringBuilder info = new StringBuilder();
-        info.append("Department [Name: ").append(name)
-            .append(", Location: ").append(location)
-            .append(", Head: ").append(head.getFullName())
-            .append("]\nDoctors in this department:\n");
-        
+        String info = "Department Name: " + name +
+                      "| Location: " + location +
+                      "| Head: " + head.getFullName() +
+                      "\nDoctors in this department:\n";
         for (Doctor doctor : doctors) {
-            info.append("- ").append(doctor.getFullName())
-                .append(" | ").append(doctor.getSpecialty()).append(" |\n");
+            info += "- " + doctor.getFullName() + " | " + doctor.getSpecialty() + " |\n";
         }
-        
-        return info.toString();
+        return info;
     }
 }

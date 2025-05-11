@@ -216,7 +216,7 @@ public class PharmacistDashboard {
                     Button dispenseBtn = new Button("Dispense");
                     dispenseBtn.setStyle("-fx-background-color: #2563eb; -fx-text-fill: white; -fx-background-radius: 8;");
                     dispenseBtn.setOnAction(ev -> {
-                        pharmacist.dispenseMedication(p);
+                        pharmacist.distributeMedication(p);
                         showAlert("Medication Dispensed", "Medication dispensed for prescription: " + p.GeneralInfo());
                         btnDispense.fire();
                     });

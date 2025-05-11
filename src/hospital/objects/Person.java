@@ -1,6 +1,6 @@
 package hospital.objects;
 
-public class Person {
+public abstract class Person {
     private String id;
     private String firstName;
     private String lastName;
@@ -72,4 +72,6 @@ public class Person {
     public boolean authenticate(String username, String password) {
         return this.username.equals(username) && this.password.equals(password);
     }
+
+    public abstract String GeneralInfo();
 }

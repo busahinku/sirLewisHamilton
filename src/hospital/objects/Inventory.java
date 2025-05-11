@@ -86,11 +86,11 @@ public class Inventory {
     }
 
     public String GeneralInfo() {
-        return "Inventory [ID: " + itemId +
+        return "Inventory ID: " + itemId +
                 ", Name: " + itemName +
                 ", Category: " + category +
                 ", Quantity: " + quantity +
-                ", Price: $" + String.format("%.2f", unitPrice) +
-                ", Location: " + location + "]";
+                ", Price: $" + unitPrice +
+                ", Location: " + location;
     }
 } 

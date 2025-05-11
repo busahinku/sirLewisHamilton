@@ -4,25 +4,21 @@ import java.time.LocalDateTime;
 
 public class Room {
     private String roomName;
-    private String roomType; // e.g., "General", "ICU", "Operating", "Emergency"
+    private String roomType;
     private int capacity;
     private boolean isAvailable;
     private Patient currentPatient;
     private LocalDateTime occupiedSince;
     private double hourlyRate;
-    private String equipment; // List of equipment in the room
-    private String notes;
+    private String equipment;
 
     public Room(String roomName, String roomType, int capacity, double hourlyRate, String equipment) {
         this.roomName = roomName;
         this.roomType = roomType;
         this.capacity = capacity;
         this.isAvailable = true;
-        this.currentPatient = null;
-        this.occupiedSince = null;
         this.hourlyRate = hourlyRate;
         this.equipment = equipment;
-        this.notes = "";
     }
 
     // Getters
@@ -46,20 +42,12 @@ public class Room {
         return currentPatient;
     }
 
-    public LocalDateTime getOccupiedSince() {
-        return occupiedSince;
-    }
-
     public double getHourlyRate() {
         return hourlyRate;
     }
 
     public String getEquipment() {
         return equipment;
-    }
-
-    public String getNotes() {
-        return notes;
     }
 
     // Methods
@@ -74,27 +62,6 @@ public class Room {
         }
     }
 
-    public void dischargePatient() {
-        if (this.currentPatient != null) {
-            System.out.println("Patient " + currentPatient.getFullName() + " discharged from room " + roomName);
-            this.currentPatient = null;
-            this.isAvailable = true;
-            this.occupiedSince = null;
-        }
-    }
-
-    public double calculateRoomCharge() {
-        if (!isAvailable && occupiedSince != null) {
-            long hours = java.time.Duration.between(occupiedSince, LocalDateTime.now()).toHours();
-            return hours * hourlyRate;
-        }
-        return 0.0;
-    }
-
-    public void addNote(String note) {
-        this.notes += "\n" + LocalDateTime.now() + ": " + note;
-    }
-
     public String GeneralInfo() {
         String status;
         if (currentPatient != null) {
@@ -103,10 +70,10 @@ public class Room {
             status = "Available";
         }
 
-        return "Room [Name: " + roomName +
+        return "Room Name: " + roomName +
                 ", Type: " + roomType +
-                ", Rate: $" + String.format("%.2f", hourlyRate) + "/hr" +
+                ", Rate: $" + hourlyRate + "/hr" +
                 ", Equipment: " + equipment +
-                ", Status: " + status + "]";
+                ", Status: " + status + "";
     }
 }

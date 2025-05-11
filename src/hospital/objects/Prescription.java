@@ -51,27 +51,12 @@ public class Prescription {
         return notes;
     }
 
-    // Methods
-    public void cancelPrescription() {
-        System.out.println("Prescription cancelled for patient: " + patient.getFullName());
-    }
-
-    public void renewPrescription(String newNotes) {
-        this.issueDate = LocalDateTime.now();
-        this.notes = newNotes;
-        System.out.println("Prescription renewed for patient: " + patient.getFullName());
-    }
-
-    public void addMedication(String newMedication) {
-        this.medication += ", " + newMedication;
-    }
-
     public String GeneralInfo() {
-        return "Prescription [Medication: " + medication +
+        return "Prescription Medication: " + medication +
                 ", Type: " + dosageType +
                 ", Usage: " + usage +
                 ", Patient: " + patient.getFullName() +
                 ", Doctor: " + doctor.getFullName() +
-                ", Date: " + issueDate + "]";
+                ", Date: " + issueDate;
     }
 }
